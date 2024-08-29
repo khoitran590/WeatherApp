@@ -20,8 +20,10 @@ function fetchWeather(location) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
+            const celsius = data.main.temp;
+            const farenheit = (celsius * 9/5) + 32;
             locationElement.textContent = data.name;
-            temperatureElement.textContent = `${Math.round(data.main.temp)}°C`;
+            temperatureElement.textContent = `${Math.round(celsius)}°C / ${Math.round(farenheit)}°F`;
             descriptionElement.textContent = data.weather[0].description;
         })
         .catch(error => {
