@@ -1,6 +1,11 @@
 body {
     font-family: Helvetica;
     background-color: #d6eae7;
+    background-image: url("./Assets/IMG_0991.jpeg");
+    background-size: 100%; /* Makes the background cover the entire element */
+    background-repeat: no-repeat; /* Prevents the background from repeating */
+    background-position: center; /* Centers the background image */
+    
 }
 .container{
     max-width: 400px;
@@ -15,6 +20,11 @@ body {
 }
 h1 {
     font-size: 30px;
+    background: linear-gradient(90deg, #318be6, #b873f0); /* Define the gradient colors */
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; 
+    background-clip: text; 
+    color: transparent; 
 }
 input[type="text"] {
     width: calc(100% - 22px); /* Adjusted width */
@@ -31,6 +41,21 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+}
+.errorMessage{
+    font-size: 20px;
+    color: #ef2929;
+}
+.resetBtn {
+    background-color: #0038f3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.resetBtn:hover{
+    background-color: red;
 }
 .weather-info{
     margin-top: 20px;
