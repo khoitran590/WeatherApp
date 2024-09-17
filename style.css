@@ -4,6 +4,7 @@ body {
 }
 .container{
     max-width: 400px;
+    max-height: 600px;
     margin: 0 auto;
     text-align: center;
     padding: 20px;
@@ -13,14 +14,15 @@ body {
     margin-top: 105px;
 }
 h1 {
-    font-size: 24px;
+    font-size: 30px;
 }
-input[type = "text"] {
-    width: 100%;
+input[type="text"] {
+    width: calc(100% - 22px); /* Adjusted width */
     padding: 10px;
-    margin: 10px 0;
+    margin: 15px auto; /* Centering the margin */
     border: 1px solid #ccc;
     border-radius: 5px;
+    display: block; /* Ensures the input takes the full width */
 }
 button {
     background-color: #0039f3;
