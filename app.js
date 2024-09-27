@@ -10,7 +10,12 @@ const temperatureElement = document.getElementById('temperature');
 const descriptionElement = document.getElementById('description');
 const errorMsg = document.getElementById('errorMessage');
 
-const cities = ['New York', 'London', 'Tokyo', 'Paris', 'Berlin', 'Sydney', 'Los Angeles', 'Dubai', 'Toronto', 'Beijing'];
+const cities = [
+    'New York', 'London', 'Tokyo', 'Paris', 'Berlin', 'Sydney', 'Los Angeles', 'Dubai', 'Toronto', 'Beijing',
+    'Hong Kong', 'Moscow', 'Mumbai', 'Cairo', 'Bangkok', 'Istanbul', 'Singapore', 'Rio de Janeiro', 'Johannesburg',
+    'Mexico City', 'Buenos Aires', 'Rome', 'Shanghai', 'Lagos', 'Seoul', 'Lima', 'Jakarta', 'Santiago', 'Kuala Lumpur',
+    'Vienna', 'Madrid', 'Barcelona', 'Munich', 'Stockholm', 'Copenhagen', 'Prague', 'Warsaw', 'Lisbon', 'Dublin'
+];
 
 searchBtn.addEventListener('click', () => {
     const location = locationInput.value;
