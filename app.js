@@ -4,10 +4,13 @@ const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 const locationInput = document.getElementById('locationInput');
 const searchBtn = document.getElementById('searchBtn');
 const resetBtn = document.getElementById('resetBtn');
+const randomBtn = document.getElementById('randomBtn');
 const locationElement = document.getElementById('location');
 const temperatureElement = document.getElementById('temperature');
 const descriptionElement = document.getElementById('description');
 const errorMsg = document.getElementById('errorMessage');
+
+const cities = ['New York', 'London', 'Tokyo', 'Paris', 'Berlin', 'Sydney', 'Los Angeles', 'Dubai', 'Toronto', 'Beijing'];
 
 searchBtn.addEventListener('click', () => {
     const location = locationInput.value;
@@ -15,8 +18,14 @@ searchBtn.addEventListener('click', () => {
         fetchWeather(location);
         errorMsg.textContent = '';
     } else {
-        errorMsg.textContent = 'Please enter a city name'
+        errorMsg.textContent = 'Please enter a city name';
     }
+});
+
+randomBtn.addEventListener('click', () => {
+    const randomCity = cities[Math.floor(Math.random() * cities.length)];
+    fetchWeather(randomCity);
+    errorMsg.textContent = ''; // Clear any error message
 });
 
 function fetchWeather(location) {
@@ -41,10 +50,12 @@ function fetchWeather(location) {
             errorMessage.textContent = 'Error fetching weather data. Please try again later.'; // Display error message
         });
 }
-function resetWeather(){
+
+function resetWeather() {
     locationInput.value = ''; // Clear the input field
     locationElement.textContent = ''; // Clear location display
     temperatureElement.textContent = ''; // Clear temperature display
     descriptionElement.textContent = ''; // Clear description display
 }
-resetBtn.addEventListener('click', resetWeather)
+
+resetBtn.addEventListener('click', resetWeather);
