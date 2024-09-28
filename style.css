@@ -79,3 +79,7 @@ button {
 button:hover{
     background-color: #689ed7 ;
 }
+#time{
+    font-weight: bold;
+    color: #fd08c8;
+}
