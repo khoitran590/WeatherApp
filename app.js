@@ -2,7 +2,7 @@ const apiKey = '381349b1f47a31c8dbb9e00405692cd1';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
 const apiTimeKey = 'EMZEN5O9TW1J';
-const apiTimeUrl = 'https://api.timezonedb.com/v2.1/get-time-zone';
+const apiTimeUrl = 'http://api.timezonedb.com/v2.1/get-time-zone';
 
 const locationInput = document.getElementById('locationInput');
 const searchBtn = document.getElementById('searchBtn');
