@@ -1,6 +1,8 @@
 const apiKey = '381349b1f47a31c8dbb9e00405692cd1';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
+const apiTimeKey = 'EMZEN5O9TW1J';
+const apiTimeUrl = 'https://api.timezonedb.com/v2.1/get-time-zone';
 
 const locationInput = document.getElementById('locationInput');
 const searchBtn = document.getElementById('searchBtn');
@@ -67,9 +69,9 @@ function fetchTime(location) {
                 const lat = data.coord.lat;
                 const lon = data.coord.lon;
 
-                const functionUrl = `/api/timezone?lat=${lat}&lng=${lon}`; // Calling your Netlify Function
+                const timeUrl = `${apiTimeUrl}?key=${apiTimeKey}&format=json&by=position&lat=${lat}&lng=${lon}`;
 
-                return fetch(functionUrl);  // Fetching time from Netlify Function
+                return fetch(timeUrl);
             } else {
                 throw new Error('City not found. Please try again.');
             }
@@ -78,17 +80,24 @@ function fetchTime(location) {
         .then(timeData => {
             if (timeData.status === 'OK') {
                 timeElement.textContent = `Local Time: ${timeData.formatted}`;
+                retries = 0; // Reset retries on success
             } else {
                 throw new Error('Time not available for this location.');
             }
         })
         .catch(error => {
-            console.error('Error fetching time:', error);
-            errorMsg.textContent = error.message;
-            timeElement.textContent = '';  // Clear time on error
+            if (retries < maxRetries) {
+                retries++;
+                setTimeout(() => {
+                    fetchTime(location);
+                }, retryDelay * retries); // Exponential backoff
+            } else {
+                errorMsg.textContent = `Failed to fetch time after ${retries} attempts. Please try again later.`;
+                timeElement.textContent = ''; // Clear time on error
+                retries = 0; // Reset retries after max attempts
+            }
         });
 }
-
 
 
 function fetchWeather(location) {
