@@ -1,6 +1,9 @@
 const apiKey = '381349b1f47a31c8dbb9e00405692cd1';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
+const apiTimeKey = 'EMZEN5O9TW1J';
+const apiTimeUrl = 'http://api.timezonedb.com/v2.1/get-time-zone';
+
 const locationInput = document.getElementById('locationInput');
 const searchBtn = document.getElementById('searchBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -9,6 +12,7 @@ const locationElement = document.getElementById('location');
 const temperatureElement = document.getElementById('temperature');
 const descriptionElement = document.getElementById('description');
 const errorMsg = document.getElementById('errorMessage');
+const timeElement = document.getElementById('time');
 
 const cities = [
     'New York', 'London', 'Tokyo', 'Paris', 'Berlin', 'Sydney', 'Los Angeles', 'Dubai', 'Toronto', 'Beijing',
@@ -16,10 +20,26 @@ const cities = [
     'Mexico City', 'Buenos Aires', 'Rome', 'Shanghai', 'Lagos', 'Seoul', 'Lima', 'Jakarta', 'Santiago', 'Kuala Lumpur',
     'Vienna', 'Madrid', 'Barcelona', 'Munich', 'Stockholm', 'Copenhagen', 'Prague', 'Warsaw', 'Lisbon', 'Dublin'
 ];
+let isFetching = false;
+
+function fetchTimeWithDelay(location) {
+    if (!isFetching) {
+        isFetching = true;
+        fetchTime(location);
+        setTimeout(() => {
+            isFetching = false;
+        }, 500); // Add a 100ms delay between requests
+    } else {
+        errorMsg.textContent = 'Please wait a moment before making another request.';
+    }
+}
+
+
 
 searchBtn.addEventListener('click', () => {
     const location = locationInput.value;
     if (location) {
+        fetchTime(location);
         fetchWeather(location);
         errorMsg.textContent = '';
     } else {
@@ -30,8 +50,42 @@ searchBtn.addEventListener('click', () => {
 randomBtn.addEventListener('click', () => {
     const randomCity = cities[Math.floor(Math.random() * cities.length)];
     fetchWeather(randomCity);
+    fetchTime(randomCity);
     errorMsg.textContent = ''; // Clear any error message
 });
+
+function fetchTime(location) {
+    const url = `${apiUrl}?q=${location}&appid=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.cod === 200) {
+                const lat = data.coord.lat;
+                const lon = data.coord.lon;
+
+                const timeUrl = `${apiTimeUrl}?key=${apiTimeKey}&format=json&by=position&lat=${lat}&lng=${lon}`;
+
+                return fetch(timeUrl);
+            } else {
+                throw new Error('City not found. Please try again.');
+            }
+        })
+        .then(response => response.json())
+        .then(timeData => {
+            if (timeData.status === 'OK') {
+                timeElement.textContent = `Local Time: ${timeData.formatted}`;
+            } else {
+                throw new Error('Time not available for this location.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMsg.textContent = error.message;
+            timeElement.textContent = '';  // Clear time on error
+        });
+}
+
 
 function fetchWeather(location) {
     const url = `${apiUrl}?q=${location}&appid=${apiKey}&units=metric`;
@@ -61,6 +115,7 @@ function resetWeather() {
     locationElement.textContent = ''; // Clear location display
     temperatureElement.textContent = ''; // Clear temperature display
     descriptionElement.textContent = ''; // Clear description display
+    timeElement.textContent = '';
 }
 
 resetBtn.addEventListener('click', resetWeather);
