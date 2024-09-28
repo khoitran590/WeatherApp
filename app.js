@@ -20,6 +20,7 @@ const cities = [
     'Mexico City', 'Buenos Aires', 'Rome', 'Shanghai', 'Lagos', 'Seoul', 'Lima', 'Jakarta', 'Santiago', 'Kuala Lumpur',
     'Vienna', 'Madrid', 'Barcelona', 'Munich', 'Stockholm', 'Copenhagen', 'Prague', 'Warsaw', 'Lisbon', 'Dublin'
 ];
+
 let isFetching = false;
 
 function fetchTimeWithDelay(location) {
@@ -54,6 +55,10 @@ randomBtn.addEventListener('click', () => {
     errorMsg.textContent = ''; // Clear any error message
 });
 
+let retries = 0;
+const maxRetries = 3; // Maximum retries allowed
+const retryDelay = 1000; // Initial delay of 1 second
+
 function fetchTime(location) {
     const url = `${apiUrl}?q=${location}&appid=${apiKey}`;
 
@@ -75,14 +80,22 @@ function fetchTime(location) {
         .then(timeData => {
             if (timeData.status === 'OK') {
                 timeElement.textContent = `Local Time: ${timeData.formatted}`;
+                retries = 0; // Reset retries on success
             } else {
                 throw new Error('Time not available for this location.');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            errorMsg.textContent = error.message;
-            timeElement.textContent = '';  // Clear time on error
+            if (retries < maxRetries) {
+                retries++;
+                setTimeout(() => {
+                    fetchTime(location);
+                }, retryDelay * retries); // Exponential backoff
+            } else {
+                errorMsg.textContent = `Failed to fetch time after ${retries} attempts. Please try again later.`;
+                timeElement.textContent = ''; // Clear time on error
+                retries = 0; // Reset retries after max attempts
+            }
         });
 }
 
