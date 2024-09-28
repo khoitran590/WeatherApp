@@ -21,7 +21,7 @@ const cities = [
     'Vienna', 'Madrid', 'Barcelona', 'Munich', 'Stockholm', 'Copenhagen', 'Prague', 'Warsaw', 'Lisbon', 'Dublin'
 ];
 
-/* let isFetching = false;
+let isFetching = false;
 
 function fetchTimeWithDelay(location) {
     if (!isFetching) {
@@ -33,7 +33,7 @@ function fetchTimeWithDelay(location) {
     } else {
         errorMsg.textContent = 'Please wait a moment before making another request.';
     }
-} */
+}
 
 
 
@@ -55,8 +55,11 @@ randomBtn.addEventListener('click', () => {
     errorMsg.textContent = ''; // Clear any error message
 });
 
+let retries = 0;
+const maxRetries = 3; // Maximum retries allowed
+const retryDelay = 1000; // Initial delay of 1 second
+
 function fetchTime(location) {
-    // First get the coordinates (latitude and longitude) of the city
     const url = `${apiUrl}?q=${location}&appid=${apiKey}`;
 
     fetch(url)
@@ -66,32 +69,35 @@ function fetchTime(location) {
                 const lat = data.coord.lat;
                 const lon = data.coord.lon;
 
-                // Now use the lat and lon to get the time from TimeZoneDB
                 const timeUrl = `${apiTimeUrl}?key=${apiTimeKey}&format=json&by=position&lat=${lat}&lng=${lon}`;
 
-                fetch(timeUrl)
-                    .then(response => response.json())
-                    .then(timeData => {
-                        if (timeData.status === 'OK') {
-                            timeElement.textContent = `Local Time: ${timeData.formatted}`;
-                        } else {
-                            timeElement.textContent = 'Time not available for this location.';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching time data:', error);
-                        timeElement.textContent = 'Error fetching time data. Please try again later.';
-                    });
+                return fetch(timeUrl);
             } else {
-                timeElement.textContent = 'City not found. Please try again.';
+                throw new Error('City not found. Please try again.');
+            }
+        })
+        .then(response => response.json())
+        .then(timeData => {
+            if (timeData.status === 'OK') {
+                timeElement.textContent = `Local Time: ${timeData.formatted}`;
+                retries = 0; // Reset retries on success
+            } else {
+                throw new Error('Time not available for this location.');
             }
         })
         .catch(error => {
-            console.error('Error fetching weather data for time:', error);
-            timeElement.textContent = 'Error fetching time data. Please try again later.';
+            if (retries < maxRetries) {
+                retries++;
+                setTimeout(() => {
+                    fetchTime(location);
+                }, retryDelay * retries); // Exponential backoff
+            } else {
+                errorMsg.textContent = `Failed to fetch time after ${retries} attempts. Please try again later.`;
+                timeElement.textContent = ''; // Clear time on error
+                retries = 0; // Reset retries after max attempts
+            }
         });
 }
-
 
 
 function fetchWeather(location) {
