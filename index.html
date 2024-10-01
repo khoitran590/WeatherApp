@@ -10,11 +10,19 @@
     <div class="container">
         <h1>Weather App</h1>
         <input type="text" id="locationInput" placeholder="Enter a city">
-        <button id="searchBtn">Search</button>
-        <button id="resetBtn" class="resetBtn">Reset</button>
-        <button id="randomBtn" class="randomBtn">I'm feeling adventurous</button>    
-        <p id="errorMessage" class = "errorMessage"></p>
-
+    
+        <div class="button-group">
+            <div class="top-buttons">
+                <button id="searchBtn">Search</button>
+                <button id="resetBtn" class="resetBtn">Reset</button>
+            </div>
+            <div class="bottom-buttons">
+                <button id="randomBtn" class="randomBtn">I'm feeling adventurous</button>
+            </div>
+        </div>
+    
+        <p id="errorMessage" class="errorMessage"></p>
+    
         <div class="weather-info">
             <h2 id="location"></h2>
             <p id="temperature"></p>

@@ -2,40 +2,72 @@ body {
     font-family: Helvetica;
     background-color: #d6eae7;
     background-image: url("./Assets/IMG_2268.JPEG");
-    background-size: 110%; /* Makes the background cover the entire element */
-    background-repeat: no-repeat; /* Prevents the background from repeating */
-    background-position: center top; /* Centers the background image */
-
-    
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top;
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
 }
-.container{
-    max-width: 400px;
-    max-height: 600px;
-    margin: 0 auto;
-    text-align: center;
+
+.container {
+    max-width: 90%;
+    max-height: 90%;
+    width: 400px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-top: 200px;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10vh;
+    text-align: center;
 }
+
 h1 {
     font-size: 30px;
-    background: linear-gradient(90deg, #318be6, #b873f0); /* Define the gradient colors */
-    -webkit-background-clip: text; /* Clip the background to the text */
-    -webkit-text-fill-color: transparent; 
-    background-clip: text; 
-    color: transparent; 
+    background: linear-gradient(90deg, #318be6, #b873f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 10px;
 }
+
 input[type="text"] {
-    width: calc(100% - 22px); /* Adjusted width */
+    width: 100%;
     padding: 10px;
-    margin: 15px auto; /* Centering the margin */
+    margin: 15px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-    display: block; /* Ensures the input takes the full width */
 }
+
+/* Flex container for the buttons */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%; /* Make sure it spans the full width */
+}
+
+/* Container for top buttons (Search and Reset) */
+.top-buttons {
+    display: flex;
+    gap: 10px; /* Space between the two buttons */
+    justify-content: center;
+}
+
+/* Bottom button on its own line */
+.bottom-buttons {
+    display: flex;
+    justify-content: center;
+}
+
 button {
     background-color: #0039f3;
     color: #fff;
@@ -43,43 +75,53 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
 }
-.errorMessage{
+
+button:hover {
+    background-color: #689ed7;
+}
+
+.resetBtn {
+    background-color: #0038f3;
+}
+
+.resetBtn:hover {
+    background-color: red;
+}
+
+.randomBtn {
+    background-color: #0038f3;
+    width: 60%; /* Width adjustment to center it nicely */
+}
+
+.randomBtn:hover {
+    background-color: green;
+}
+
+.errorMessage {
     font-size: 20px;
     color: #ef2929;
 }
-.resetBtn {
-    background-color: #0038f3;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.resetBtn:hover{
-    background-color: red;
-}
-.randomBtn {
-    background-color: #0038f3;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 60%;
-    margin-top: 10px;
-}
-.randomBtn:hover{
-    background-color: green;
-}
-.weather-info{
-    margin-top: 20px;
-}
-button:hover{
-    background-color: #689ed7 ;
-}
-#time{
+
+
+#time {
     font-weight: bold;
     color: #fd08c8;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    button, .resetBtn, .randomBtn {
+        width: 100%; /* Full width on small screens */
+    }
 }
